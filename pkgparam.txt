@@ -1,0 +1,11 @@
+# 名称
+NAME=tcp_proxy_tool
+
+# 作者
+AUTHOR="Eyre Turing"
+
+# 版本号
+VERSION=4.0
+
+# 描述
+DESCRIPTION="一个可以实现TCP内网穿透或网络代理的工具"
