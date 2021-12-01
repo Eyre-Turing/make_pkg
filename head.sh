@@ -8,7 +8,7 @@ main()
 	local tmpdir=$(mktemp -d)
 	
 	# 截取#__END__后面的内容，这部分内容是一个压缩包，里面保存资源
-	sed -nb '/^#__END__$/,$p' $0 | dd of="$tmpdir/pkg.tar" bs=1 skip=9 2>/dev/null
+	sed -b '1,/^#__END__$/d' $0 >"$tmpdir/pkg.tar" 2>/dev/null
 	
 	# 解压到临时文件夹里
 	tar -xf "$tmpdir/pkg.tar" -C "$tmpdir"
