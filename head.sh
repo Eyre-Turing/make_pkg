@@ -8,16 +8,27 @@ main()
 	local tmpdir=$(mktemp -d)
 	
 	# 截取#__END__后面的内容，这部分内容是一个压缩包，里面保存资源
-	sed -b '1,/^#__END__$/d' $0 >"$tmpdir/pkg.tar" 2>/dev/null
+	if ! sed -b '1,/^#__END__$/d' $0 >"$tmpdir/pkg.tar" 2>/dev/null; then
+		echo "Split pkg body fail!" >&2
+		rm -rf "$tmpdir"
+		exit 1
+	fi
 	
 	# 解压到临时文件夹里
-	tar -xf "$tmpdir/pkg.tar" -C "$tmpdir"
+	if ! tar -xf "$tmpdir/pkg.tar" -C "$tmpdir"; then
+		echo "Unpack pkg body fail!" >&2
+		rm -rf "$tmpdir"
+		exit 2
+	fi
 	
 	# 执行解压包里的 pkg/cmd.sh 文件
-	chmod +x "$tmpdir/pkg/cmd.sh"
-	local path=$(realpath "$0")
-	path=${path%/*}
-	"$tmpdir/pkg/cmd.sh" "$path" "${@}"
+	if ! chmod +x "$tmpdir/pkg/cmd.sh"; then
+		echo "Make pkg body script runnable fail!" >&2
+		rm -rf "$tmpdir"
+		exit 3
+	fi
+	
+	"$tmpdir/pkg/cmd.sh" "$(dirname "$(realpath "$0")")" "${@}"
 	
 	# 删除临时文件夹
 	rm -rf "$tmpdir"

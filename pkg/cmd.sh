@@ -8,6 +8,8 @@ self_path=${self_path%/*}
 save_pkg_path=$1
 shift
 
+echo "pkg path is: ${save_pkg_path}"
+
 while [ $# -gt 0 ]; do
 	echo "Your pkg param: $1"
 	shift
