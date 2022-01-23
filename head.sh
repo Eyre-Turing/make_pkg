@@ -9,26 +9,26 @@ main()
 	
 	# 截取#__END__后面的内容，这部分内容是一个压缩包，里面保存资源
 	if ! sed -b '1,/^#__END__$/d' $0 >"$tmpdir/pkg.tar" 2>/dev/null; then
-		echo "Split pkg body fail!" >&2
+		echo "Split pkg body fail"! >&2
 		rm -rf "$tmpdir"
 		exit 1
 	fi
 	
 	# 解压到临时文件夹里
 	if ! tar -xf "$tmpdir/pkg.tar" -C "$tmpdir"; then
-		echo "Unpack pkg body fail!" >&2
+		echo "Unpack pkg body fail"! >&2
 		rm -rf "$tmpdir"
 		exit 2
 	fi
 	
 	# 执行解压包里的 pkg/cmd.sh 文件
 	if ! chmod +x "$tmpdir/pkg/cmd.sh"; then
-		echo "Make pkg body script runnable fail!" >&2
+		echo "Make pkg body script runnable fail"! >&2
 		rm -rf "$tmpdir"
 		exit 3
 	fi
 	
-	"$tmpdir/pkg/cmd.sh" "$(dirname "$(realpath "$0")")" "${@}"
+	"$tmpdir/pkg/cmd.sh" "$(realpath "$0")" "${@}"
 	
 	# 删除临时文件夹
 	rm -rf "$tmpdir"
@@ -49,26 +49,26 @@ if [ $# -gt 0 ]; then
 			exit 0
 			;;
 		"--name" | "-n")
-			echo "Name: $NAME"
+			echo "$NAME"
 			exit 0
 			;;
 		"--version" | "-v")
-			echo "Version: $VERSION"
+			echo "$VERSION"
 			exit 0
 			;;
 		"--author" | "-a")
-			echo "Author: $AUTHOR"
+			echo "$AUTHOR"
 			exit 0
 			;;
 		"--description" | "-d")
-			echo "Description: $DESCRIPTION"
+			echo "$DESCRIPTION"
 			exit 0
 			;;
 		"--pkg-param" | "-p")
 			shift
 			;;
 		*)
-			echo "Invalid param!" >&2
+			echo "Invalid param"! >&2
 			exit 1
 			;;
 	esac

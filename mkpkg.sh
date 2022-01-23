@@ -8,7 +8,7 @@ param_flag_line=$(grep -n '^#__PARAM__$' pkg.run | awk -F ':' '{print $1}')
 sed -i "${param_flag_line}r pkgparam.txt" pkg.run
 
 # 转换为 unix 模式，防止不小心以 dos 模式保存时 \r\n 行尾对运行有影响
-if which dos2unix 2>/dev/null; then
+if which dos2unix >/dev/null 2>&1; then
 	dos2unix pkg.run
 else
 	echo 'skip dos2unix, because dos2unix command not found.' >&2
