@@ -28,10 +28,13 @@ main()
 		exit 3
 	fi
 	
-	"$tmpdir/pkg/cmd.sh" "$(realpath "$0")" "${@}"
+	/bin/bash "$tmpdir/pkg/cmd.sh" "$(realpath "$0")" "${@}"
+	local status=$?
 	
 	# 删除临时文件夹
 	rm -rf "$tmpdir"
+
+	return $status
 }
 
 # 解析调用参数
@@ -76,5 +79,5 @@ fi
 
 main "${@}"
 
-exit 0
+exit $?
 #__END__
