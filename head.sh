@@ -8,7 +8,7 @@ main()
 	local tmpdir=$(mktemp -d)
 	
 	# 截取#__END__后面的内容，这部分内容是一个压缩包，里面保存资源
-	if ! sed -b '1,/^#__END__$/d' $0 >"$tmpdir/pkg.tar" 2>/dev/null; then
+	if ! sed -b '1,/^#__END__$/d' "$0" >"$tmpdir/pkg.tar" 2>/dev/null; then
 		echo "Split pkg body fail"! >&2
 		rm -rf "$tmpdir"
 		exit 1
